@@ -47,7 +47,7 @@ Return ONLY a valid JSON array with no markdown:
       model: "anthropic/claude-3.5-sonnet",
       messages: [{ role: "user", content: prompt }],
       temperature: 0.8,
-      max_tokens: 1200,
+      max_tokens: 2000,
     }),
   });
 
@@ -59,9 +59,21 @@ Return ONLY a valid JSON array with no markdown:
   const data = await response.json() as {
     choices: Array<{ message: { content: string } }>;
   };
+  if (!data.choices?.length) throw new Error("OpenRouter returned no choices");
   const content = data.choices[0].message.content.trim();
   const jsonStr = content.replace(/^```(?:json)?\n?/, "").replace(/\n?```$/, "");
-  return JSON.parse(jsonStr) as Array<{
+  let parsed: Array<{
+    feature_name: string;
+    description: string;
+    gap_analysis: string;
+    priority: string;
+  }>;
+  try {
+    parsed = JSON.parse(jsonStr) as typeof parsed;
+  } catch {
+    throw new Error("LLM returned non-JSON output");
+  }
+  return parsed as Array<{
     feature_name: string;
     description: string;
     gap_analysis: string;
@@ -74,12 +86,15 @@ export async function POST(request: NextRequest) {
     const body = await request.json() as { competitor?: string };
     const competitor = body.competitor || "Informatica";
 
-    const raw = await generateAnalysis(competitor);
+    const ALLOWED_COMPETITORS = ["Informatica", "Talend", "Collibra", "Ataccama", "Experian"];
+    const safeCompetitor = ALLOWED_COMPETITORS.includes(competitor) ? competitor : "Informatica";
+
+    const raw = await generateAnalysis(safeCompetitor);
 
     const briefs = raw.map((b, i) => ({
       id: `live-${Date.now()}-${i}`,
-      competitor_id: `live-${competitor.toLowerCase().replace(/\s+/g, "-")}`,
-      competitor_name: competitor,
+      competitor_id: `live-${safeCompetitor.toLowerCase().replace(/\s+/g, "-")}`,
+      competitor_name: safeCompetitor,
       feature_name: b.feature_name,
       description: b.description,
       gap_analysis: b.gap_analysis,
@@ -90,10 +105,9 @@ export async function POST(request: NextRequest) {
     }));
 
     return NextResponse.json({ briefs, _source: "llm" });
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "Unknown error";
+  } catch {
     return NextResponse.json(
-      { error: `Analysis failed: ${message}`, briefs: [] },
+      { error: "Analysis failed. Please try again.", briefs: [] },
       { status: 500 }
     );
   }

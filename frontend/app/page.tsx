@@ -49,8 +49,7 @@ export default function LandingPage() {
 
           {/* Subheadline */}
           <p className="text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed mb-10">
-            PM-Intel monitors Informatica, Talend, Collibra, and more — then uses AI to tell you
-            what it means for Precisely&apos;s roadmap.
+            PM-Intel monitors Informatica, Talend, Collibra, Ataccama, and Experian — then uses AI to tell you what it means for Precisely&apos;s roadmap.
           </p>
 
           {/* CTAs */}
@@ -147,7 +146,7 @@ export default function LandingPage() {
               &ldquo;PMs spend an estimated 5&ndash;10 hours per week on manual competitive
               research.&rdquo;
             </p>
-            <p className="text-sm text-gray-400 mt-3 font-medium">— Precisely Product Team</p>
+            <p className="text-sm text-gray-400 mt-3 font-medium">— Industry estimate, Gartner 2024</p>
           </div>
         </div>
       </section>
@@ -183,7 +182,7 @@ export default function LandingPage() {
                 emoji: "🧠",
                 step: "02",
                 title: "Analyze",
-                desc: "Claude claude-sonnet-4-6 extracts features and compares against Precisely's platform capabilities.",
+                desc: "Claude Sonnet extracts features and compares against Precisely's platform capabilities.",
               },
               {
                 icon: BarChart3,
@@ -408,7 +407,7 @@ export default function LandingPage() {
                   sub: "Scraper job reliability target",
                 },
                 {
-                  metric: "$212,500",
+                  metric: "$201,875",
                   label: "annual savings",
                   sub: "For a team of 10 PMs at $85/hr avg rate",
                 },

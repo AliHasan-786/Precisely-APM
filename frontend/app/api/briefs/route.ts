@@ -7,7 +7,8 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 // Mock briefs (used when backend is unavailable)
 // ---------------------------------------------------------------------------
 
-const MOCK_BRIEFS = [
+function getMockBriefs() {
+  return [
   // Informatica
   {
     id: "brief-1",
@@ -134,16 +135,15 @@ const MOCK_BRIEFS = [
     id: "brief-10",
     competitor_id: "comp-5",
     competitor_name: "Experian",
-    feature_name: "Experian adds global address verification for 245 countries",
-    description:
-      "Experian QAS has extended address verification coverage to 245 countries with enhanced support for Southeast Asia and Sub-Saharan Africa, including local-language transliteration and geocoding.",
-    gap_analysis:
-      "**Direct threat to core Precisely business:** Address verification is Precisely's flagship capability. Experian expanding global coverage narrows our geographic differentiation advantage.\n\n**Recommended action:** Commission a third-party accuracy benchmark for Southeast Asia and Africa. If we lead, publicise it; if we lag, prioritise coverage investment in those regions.",
-    priority: "High",
+    feature_name: "Experian expands B2B data enrichment with real-time firmographic API",
+    description: "Experian has launched a real-time firmographic enrichment API that appends company size, industry classification, revenue estimates, and technographic data to CRM records at the point of entry. Designed for Salesforce and HubSpot embedding with sub-200ms response times.",
+    gap_analysis: "**Gap identified:** Precisely's data enrichment suite is strong on consumer/address data but less differentiated on B2B firmographic enrichment compared to Experian's depth of business data assets.\n\n**Precisely strength:** Our location intelligence and address validation layers add a verified physical presence signal that pure firmographic data lacks — a verified business address is more trustworthy than an inferred one.\n\n**Recommended action:** Develop a 'Verified Business Profile' bundle that combines Precisely address validation with third-party firmographic enrichment. Position this as the higher-trust alternative to Experian's raw enrichment API.",
+    priority: "Medium",
     source_url: "https://www.experian.com/blogs/insights/",
     created_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
   },
-];
+  ];
+}
 
 // ---------------------------------------------------------------------------
 // Route handler
@@ -171,7 +171,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(data);
   } catch {
     // Backend is down — filter and return mock data
-    let briefs = MOCK_BRIEFS;
+    let briefs = getMockBriefs();
     if (competitor) {
       briefs = briefs.filter((b) => b.competitor_name === competitor);
     }

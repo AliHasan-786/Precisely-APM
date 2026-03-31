@@ -131,7 +131,7 @@ export default function CaseStudyPage() {
           {/* Metadata row */}
           <div className="flex flex-wrap gap-6 text-sm text-gray-500 border-t border-b border-gray-100 py-5">
             {[
-              { label: "Role", value: "AI Product Manager Intern (Candidate)" },
+              { label: "Role", value: "AI Product Manager Intern" },
               { label: "Company", value: "Precisely Software" },
               { label: "Timeline", value: "10 weeks" },
             ].map(({ label, value }) => (
@@ -163,7 +163,7 @@ export default function CaseStudyPage() {
                 reading blogs, scanning release notes, and synthesizing findings before roadmap
                 discussions. PM-Intel is an agentic system that automates this workflow end-to-end:
                 from scraping competitor releases to generating PRD counter-requirements using
-                Claude claude-sonnet-4-6. The result is 15-minute weekly competitive reviews instead of
+                Claude Sonnet. The result is 15-minute weekly competitive reviews instead of
                 5-hour manual sessions, while ensuring every PM on the team works from the same
                 shared intelligence picture.
               </p>
@@ -227,8 +227,8 @@ export default function CaseStudyPage() {
                   {
                     name: "Alex Chen",
                     role: "Senior Product Manager, Data Quality",
-                    goal: "Stay ahead of Informatica&apos;s roadmap moves so he can position Precisely&apos;s data quality suite competitively",
-                    pain: "Spends every Sunday evening reading Informatica&apos;s release notes before Monday&apos;s product sync",
+                    goal: "Stay ahead of Informatica's roadmap moves so he can position Precisely's data quality suite competitively",
+                    pain: "Spends every Sunday evening reading Informatica's release notes before Monday's product sync",
                     quote:
                       "I need a way to know what competitors shipped this week without spending my whole Sunday on it.",
                     initials: "AC",
@@ -259,11 +259,11 @@ export default function CaseStudyPage() {
                     <div className="space-y-3 mb-5 text-sm text-gray-600">
                       <p>
                         <span className="font-semibold text-gray-800">Goal:</span>{" "}
-                        <span dangerouslySetInnerHTML={{ __html: goal }} />
+                        <span>{goal}</span>
                       </p>
                       <p>
                         <span className="font-semibold text-gray-800">Pain:</span>{" "}
-                        <span dangerouslySetInnerHTML={{ __html: pain }} />
+                        <span>{pain}</span>
                       </p>
                     </div>
                     <blockquote className="border-l-4 border-[#E20074] pl-4 italic text-gray-700 text-sm">
@@ -329,7 +329,7 @@ export default function CaseStudyPage() {
                   <ul className="space-y-2 text-gray-600 text-sm leading-relaxed mb-5">
                     <li className="flex gap-2">
                       <span className="text-[#E20074] font-bold mt-0.5">→</span>
-                      Claude claude-sonnet-4-6 with structured JSON output for feature extraction and gap
+                      Claude Sonnet with structured JSON output for feature extraction and gap
                       analysis
                     </li>
                     <li className="flex gap-2">
@@ -547,7 +547,7 @@ export default function CaseStudyPage() {
 │  Scraping    │    AI Analysis       │   Frontend            │
 │  Layer       │    Layer             │   Layer               │
 │              │                      │                       │
-│  APScheduler │  Claude claude-sonnet-4-6   │  Next.js 14 App Router│
+│  APScheduler │  Claude Sonnet   │  Next.js 14 App Router│
 │  httpx       │  Structured JSON     │  Tailwind CSS         │
 │  BeautifulSoup│  Feature Extraction │  Shadcn UI            │
 │              │  Gap Analysis        │  React                │
@@ -556,6 +556,22 @@ export default function CaseStudyPage() {
 │                    Data Layer                               │
 │         Supabase (PostgreSQL) + In-Memory Mock              │
 └─────────────────────────────────────────────────────────────┘`}</pre>
+              </div>
+
+              <div className="bg-blue-50 border border-blue-200 rounded-2xl p-5 mb-8 flex gap-3">
+                <span className="text-blue-500 text-lg flex-shrink-0">ℹ</span>
+                <div>
+                  <p className="text-sm font-semibold text-blue-900 mb-1">Prototype Scope</p>
+                  <p className="text-sm text-blue-800 leading-relaxed">
+                    The live demo uses curated sample data to showcase the analysis and PRD generation
+                    workflows end-to-end. The <strong>AI Analysis Layer</strong> and{" "}
+                    <strong>Draft Counter-Requirement</strong> features make real Claude API calls on
+                    every interaction. In a production deployment, the Python scraping backend would
+                    replace the sample data by pulling live content from competitor RSS feeds and
+                    blog pages on a weekly schedule — the architecture for this layer is fully
+                    implemented in the repo.
+                  </p>
+                </div>
               </div>
 
               <div className="grid sm:grid-cols-3 gap-5">
@@ -572,7 +588,7 @@ export default function CaseStudyPage() {
                   {
                     title: "AI Analysis Layer",
                     items: [
-                      "Claude claude-sonnet-4-6 (Anthropic)",
+                      "Claude Sonnet (Anthropic)",
                       "Structured JSON output schema",
                       "Feature extraction + gap analysis",
                       "PRD counter-requirement generation",
@@ -623,7 +639,6 @@ export default function CaseStudyPage() {
                       "Claude-powered feature extraction + gap analysis",
                       "Priority-ranked weekly brief dashboard",
                       "One-click PRD counter-requirement generator",
-                      "Slack webhook for Monday morning delivery",
                     ],
                   },
                   {
@@ -632,6 +647,7 @@ export default function CaseStudyPage() {
                     badge: "bg-gray-100 text-gray-700",
                     items: [
                       "Competitor sentiment scoring",
+                      "Slack webhook for Monday morning delivery",
                       "Email digest with HTML formatting",
                       "Historical trend charts",
                       "Saved search + alerting",

@@ -50,11 +50,16 @@ Write a concise product requirement ticket for Precisely to counter this move. R
   const data = await response.json() as {
     choices: Array<{ message: { content: string } }>;
   };
+  if (!data.choices?.length) throw new Error("OpenRouter returned no choices");
   const content = data.choices[0].message.content.trim();
 
   // Strip markdown code fences if present
   const jsonStr = content.replace(/^```(?:json)?\n?/, "").replace(/\n?```$/, "");
-  return JSON.parse(jsonStr);
+  try {
+    return JSON.parse(jsonStr);
+  } catch {
+    throw new Error("LLM returned non-JSON output");
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -98,17 +103,24 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Truncate inputs to safe lengths before passing to LLM
+    const truncate = (s: string, n: number) => s.length > n ? s.slice(0, n) + "..." : s;
+    const safeFeature = truncate(body.feature_name, 200);
+    const safeDesc = truncate(body.description, 500);
+    const safeGap = truncate(body.gap_analysis || "", 500);
+    const safeCompetitor = truncate(body.competitor || "", 100);
+
     // Try real LLM first, fall back to mock
     try {
       const prd = await generateLLMPRD(
-        body.feature_name,
-        body.description,
-        body.gap_analysis || "",
-        body.competitor || ""
+        safeFeature,
+        safeDesc,
+        safeGap,
+        safeCompetitor
       );
       return NextResponse.json({ ...prd, _source: "llm" });
     } catch {
-      const prd = generateMockPRD(body.feature_name, body.competitor || "");
+      const prd = generateMockPRD(safeFeature, safeCompetitor);
       return NextResponse.json(prd);
     }
   } catch {

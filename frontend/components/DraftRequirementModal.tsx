@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { X, Copy, Check, Sparkles, AlertCircle, Loader2 } from "lucide-react";
+import { X, Copy, Check, Sparkles, AlertCircle } from "lucide-react";
 
 interface Brief {
   id: string;
@@ -26,6 +26,9 @@ interface DraftRequirementModalProps {
 }
 
 const PRIORITY_COLORS: Record<string, string> = {
+  High: "bg-red-100 text-red-700 border-red-200",
+  Medium: "bg-amber-100 text-amber-700 border-amber-200",
+  Low: "bg-blue-100 text-blue-700 border-blue-200",
   P0: "bg-red-100 text-red-700 border-red-200",
   P1: "bg-amber-100 text-amber-700 border-amber-200",
   P2: "bg-blue-100 text-blue-700 border-blue-200",
@@ -138,15 +141,7 @@ export default function DraftRequirementModal({ brief, onClose }: DraftRequireme
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // Fallback for older browsers
-      const textarea = document.createElement("textarea");
-      textarea.value = text;
-      document.body.appendChild(textarea);
-      textarea.select();
-      document.execCommand("copy");
-      document.body.removeChild(textarea);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      // clipboard API unavailable — no-op
     }
   };
 

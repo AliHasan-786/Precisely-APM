@@ -79,8 +79,7 @@ export default function DashboardPage() {
   // Initial load
   useEffect(() => {
     void fetchCompetitors();
-    void fetchBriefs(null);
-  }, [fetchCompetitors, fetchBriefs]);
+  }, [fetchCompetitors]);
 
   // Re-fetch briefs when competitor filter changes
   useEffect(() => {
@@ -101,12 +100,16 @@ export default function DashboardPage() {
       });
       const data = await res.json() as { briefs?: Brief[]; error?: string };
       if (data.briefs && data.briefs.length > 0) {
-        setBriefs((prev) => [...data.briefs!, ...prev]);
+        setBriefs((prev) => {
+          const existingNames = new Set(prev.map(b => b.feature_name));
+          const newBriefs = data.briefs!.filter(b => !existingNames.has(b.feature_name));
+          return [...newBriefs, ...prev];
+        });
         setLiveAnalysisCount((n) => n + data.briefs!.length);
         setLastUpdated(new Date());
       }
-    } catch {
-      // Silently fail — existing data remains
+    } catch (error) {
+      console.error("Analysis failed:", error);
     } finally {
       setIsAnalyzing(false);
     }
@@ -204,7 +207,7 @@ export default function DashboardPage() {
 
           {/* Page body */}
           <div className="flex-1 overflow-y-auto px-6 py-5">
-            {loadingCompetitors && loadingBriefs ? (
+            {loadingCompetitors || loadingBriefs ? (
               <div className="flex items-center justify-center h-64">
                 <div className="flex flex-col items-center gap-3">
                   <div className="w-10 h-10 rounded-full precisely-gradient flex items-center justify-center animate-pulse">
