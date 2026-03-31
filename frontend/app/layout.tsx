@@ -1,14 +1,22 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
 
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  title: "PM-Intel Agent | Precisely",
+  title: "PM-Intel Agent — Precisely",
   description:
-    "AI-powered competitive intelligence for Precisely Product Managers. Track competitor moves and draft counter-requirements in one click.",
-  keywords: ["competitive intelligence", "product management", "Precisely", "data integrity"],
+    "AI-powered competitive intelligence for Data Integrity Product Managers. Monitors Informatica, Talend, Collibra and more — automatically.",
+  keywords: ["competitive intelligence", "product management", "Precisely", "data integrity", "AI"],
   openGraph: {
-    title: "PM-Intel Agent | Precisely",
-    description: "AI-powered competitive intelligence for Precisely Product Managers.",
+    title: "PM-Intel Agent — Precisely",
+    description:
+      "AI-powered competitive intelligence for Data Integrity Product Managers. Monitors Informatica, Talend, Collibra and more — automatically.",
     type: "website",
   },
 };
@@ -19,12 +27,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      </head>
-      <body className="min-h-screen bg-[#F8F9FA] antialiased">{children}</body>
+    <html lang="en" suppressHydrationWarning className={inter.variable}>
+      <body className="min-h-screen bg-[#F8F9FA] antialiased font-sans">{children}</body>
     </html>
   );
 }
