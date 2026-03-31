@@ -1,31 +1,80 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+// ---------------------------------------------------------------------------
+// OpenRouter LLM call
+// ---------------------------------------------------------------------------
+
+async function generateLLMPRD(
+  featureName: string,
+  description: string,
+  gapAnalysis: string,
+  competitor: string
+) {
+  const apiKey = process.env.OPENROUTER_API_KEY;
+  if (!apiKey) throw new Error("No API key");
+
+  const prompt = `You are a senior Product Manager at Precisely, a data integrity company. A competitor (${competitor || "a competitor"}) just launched the following feature:
+
+Feature: ${featureName}
+Description: ${description}
+Gap Analysis: ${gapAnalysis || "This feature does not currently exist in Precisely's platform."}
+
+Write a concise product requirement ticket for Precisely to counter this move. Return ONLY valid JSON in this exact shape:
+{
+  "title": "short action-oriented title (max 10 words)",
+  "user_story": "As a [persona], I want [capability] so that [benefit]",
+  "acceptance_criteria": ["criterion 1", "criterion 2", "criterion 3", "criterion 4"],
+  "technical_notes": "2-3 sentences on implementation approach using Precisely's existing platform (data quality engine, Connect2 connectors, address validation, location intelligence)",
+  "priority": "P1"
+}`;
+
+  const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+      "HTTP-Referer": "https://precisely-apm.vercel.app",
+      "X-Title": "Precisely PM-Intel Agent",
+    },
+    body: JSON.stringify({
+      model: "anthropic/claude-3.5-sonnet",
+      messages: [{ role: "user", content: prompt }],
+      temperature: 0.7,
+      max_tokens: 800,
+    }),
+  });
+
+  if (!response.ok) throw new Error(`OpenRouter error: ${response.status}`);
+
+  const data = await response.json() as {
+    choices: Array<{ message: { content: string } }>;
+  };
+  const content = data.choices[0].message.content.trim();
+
+  // Strip markdown code fences if present
+  const jsonStr = content.replace(/^```(?:json)?\n?/, "").replace(/\n?```$/, "");
+  return JSON.parse(jsonStr);
+}
 
 // ---------------------------------------------------------------------------
-// Mock PRD generator (used when backend is unavailable)
+// Mock fallback
 // ---------------------------------------------------------------------------
 
 function generateMockPRD(featureName: string, competitor: string) {
-  const templates = [
-    {
-      title: `Add AI-assisted ${featureName.substring(0, 45).trim()}`,
-      user_story: `As a data steward at an enterprise Precisely customer, I want an AI-powered ${featureName.toLowerCase().substring(0, 60)} capability so that I can work more efficiently and we remain competitive against ${competitor || "market leaders"} in customer evaluations.`,
-      acceptance_criteria: [
-        `Feature is accessible from the main Precisely product navigation without additional plugins or configuration`,
-        `Core functionality is on par with or exceeds what ${competitor || "competitors"} offer, with documented benchmark results`,
-        `Performance meets a defined SLA — specify latency and throughput targets in the technical specification`,
-        `Feature is available to all existing enterprise customers with no migration or re-onboarding required`,
-        `In-app documentation, tooltips, and a getting-started guide are available at launch`,
-        `Feature telemetry is instrumented so usage can be tracked in the product analytics dashboard`,
-      ],
-      technical_notes: `Leverage Precisely's existing DQ rules engine and Connect2 connector framework as the foundation. Evaluate whether to build natively or through a technology partnership. Recommend a 6-week prototype sprint followed by a full GA release within the quarter.`,
-      priority: "P1",
-    },
-  ];
-
-  return templates[0];
+  return {
+    title: `Add AI-assisted ${featureName.substring(0, 45).trim()}`,
+    user_story: `As a data steward at an enterprise Precisely customer, I want an AI-powered ${featureName.toLowerCase().substring(0, 60)} capability so that I can work more efficiently and remain competitive against ${competitor || "market leaders"}.`,
+    acceptance_criteria: [
+      `Feature is accessible from the main Precisely product navigation without additional configuration`,
+      `Core functionality is on par with or exceeds what ${competitor || "competitors"} offer, with documented benchmark results`,
+      `Performance meets a defined SLA — latency and throughput targets specified in the technical spec`,
+      `Feature telemetry is instrumented so usage can be tracked in the product analytics dashboard`,
+    ],
+    technical_notes: `Leverage Precisely's existing DQ rules engine and Connect2 connector framework as the foundation. Recommend a 6-week prototype sprint followed by full GA within the quarter.`,
+    priority: "P1",
+    _source: "mock",
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -49,24 +98,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Try backend first
+    // Try real LLM first, fall back to mock
     try {
-      const response = await fetch(`${API_URL}/api/draft-requirement`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-
-      if (!response.ok) throw new Error(`Backend returned ${response.status}`);
-
-      const data = await response.json();
-      return NextResponse.json(data);
+      const prd = await generateLLMPRD(
+        body.feature_name,
+        body.description,
+        body.gap_analysis || "",
+        body.competitor || ""
+      );
+      return NextResponse.json({ ...prd, _source: "llm" });
     } catch {
-      // Backend down — generate deterministic mock PRD
       const prd = generateMockPRD(body.feature_name, body.competitor || "");
-      return NextResponse.json({ ...prd, _source: "mock" });
+      return NextResponse.json(prd);
     }
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: "Invalid request body" },
       { status: 400 }
