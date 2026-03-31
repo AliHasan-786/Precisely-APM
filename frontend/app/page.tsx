@@ -36,7 +36,7 @@ export default function LandingPage() {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-50 border border-purple-100 text-sm font-medium text-[#4A154B] mb-8">
             <span className="w-1.5 h-1.5 rounded-full bg-[#E20074] animate-pulse" />
-            Built for Precisely Software — AI PM Internship Portfolio
+            Built for Precisely Software | AI PM Internship Portfolio
           </div>
 
           {/* Headline */}
@@ -49,7 +49,7 @@ export default function LandingPage() {
 
           {/* Subheadline */}
           <p className="text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed mb-10">
-            PM-Intel monitors Informatica, Talend, Collibra, Ataccama, and Experian — then uses AI to tell you what it means for Precisely&apos;s roadmap.
+            PM-Intel monitors Informatica, Talend, Collibra, Ataccama, and Experian and uses AI to surface what each move means for Precisely&apos;s roadmap.
           </p>
 
           {/* CTAs */}
@@ -104,7 +104,7 @@ export default function LandingPage() {
               </span>
             </h2>
             <p className="text-gray-500 text-lg max-w-2xl mx-auto">
-              Staying ahead of competitors in data integrity is a full-time job — on top of your
+              Staying ahead of competitors in data integrity is a full-time job on top of your
               actual full-time job.
             </p>
           </div>

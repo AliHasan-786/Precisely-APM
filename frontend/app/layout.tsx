@@ -9,14 +9,14 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "PM-Intel Agent — Precisely",
+  title: "PM-Intel Agent",
   description:
-    "AI-powered competitive intelligence for Data Integrity Product Managers. Monitors Informatica, Talend, Collibra and more — automatically.",
+    "AI-powered competitive intelligence for Data Integrity Product Managers. Monitors Informatica, Talend, Collibra and more, automatically.",
   keywords: ["competitive intelligence", "product management", "Precisely", "data integrity", "AI"],
   openGraph: {
-    title: "PM-Intel Agent — Precisely",
+    title: "PM-Intel Agent",
     description:
-      "AI-powered competitive intelligence for Data Integrity Product Managers. Monitors Informatica, Talend, Collibra and more — automatically.",
+      "AI-powered competitive intelligence for Data Integrity Product Managers. Monitors Informatica, Talend, Collibra and more, automatically.",
     type: "website",
   },
 };

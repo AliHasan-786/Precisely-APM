@@ -30,7 +30,7 @@ export default function Navbar() {
               PM-Intel
             </span>
             <span className="text-[11px] text-gray-400 font-medium tracking-wide">
-              by Precisely
+              PM internship portfolio
             </span>
           </Link>
 

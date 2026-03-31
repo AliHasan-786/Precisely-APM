@@ -159,7 +159,7 @@ export default function CaseStudyPage() {
             <section id="summary">
               <SectionHeading>Executive Summary</SectionHeading>
               <p className="text-gray-600 text-lg leading-relaxed">
-                PMs at Precisely spend 5&ndash;10 hours per week on manual competitive research —
+                PMs at Precisely spend 5&ndash;10 hours per week on manual competitive research:
                 reading blogs, scanning release notes, and synthesizing findings before roadmap
                 discussions. PM-Intel is an agentic system that automates this workflow end-to-end:
                 from scraping competitor releases to generating PRD counter-requirements using
@@ -176,8 +176,8 @@ export default function CaseStudyPage() {
               <SectionHeading>The Problem</SectionHeading>
               <p className="text-gray-600 leading-relaxed mb-6">
                 Precisely competes in the data integrity market against Informatica, Talend,
-                Collibra, Ataccama, and Experian. Each of these companies ships features frequently
-                — new releases, blog posts, and documentation updates arrive weekly. Keeping up
+                Collibra, Ataccama, and Experian. Each of these companies ships frequently. New
+                releases, blog posts, and documentation updates arrive every week. Keeping up
                 with all of them is a structural problem, not a willpower problem.
               </p>
 
@@ -186,7 +186,7 @@ export default function CaseStudyPage() {
                   {
                     num: "01",
                     title: "Information Fragmentation",
-                    desc: "There is no single feed. PMs monitor 20+ sources manually — competitor blogs, release notes, LinkedIn announcements, G2 review changes, and partner press releases. Each source has a different cadence and format, making aggregation difficult without dedicated tooling.",
+                    desc: "There is no single feed. PMs monitor 20+ sources manually: competitor blogs, release notes, LinkedIn announcements, G2 review changes, and partner press releases. Each source has a different cadence and format, making aggregation difficult without dedicated tooling.",
                   },
                   {
                     num: "02",
@@ -196,7 +196,7 @@ export default function CaseStudyPage() {
                   {
                     num: "03",
                     title: "Translation Tax",
-                    desc: "Even when PMs find a relevant update, converting it into an actionable internal requirement — \"we should build X because competitor Y launched Z\" — requires significant context-switching. This step alone consumes 1–2 hours per finding, discouraging thorough competitive tracking.",
+                    desc: "Even when PMs find a relevant update, converting it into an actionable internal requirement (\"we should build X because competitor Y launched Z\") requires significant context-switching. This step alone consumes 1–2 hours per finding, which discourages thorough competitive tracking.",
                   },
                 ].map(({ num, title, desc }) => (
                   <div key={num} className="flex gap-5">
@@ -237,7 +237,7 @@ export default function CaseStudyPage() {
                     name: "Priya Patel",
                     role: "VP of Product Management",
                     goal: "Ensure the entire PM team is aligned on competitive landscape without scheduling weekly sync meetings",
-                    pain: "Competitive intel is siloed — each PM tracks different competitors with no shared format",
+                    pain: "Competitive intel is siloed. Each PM tracks different competitors in their own format with no shared baseline",
                     quote:
                       "I want one place where the whole team sees the same competitive picture.",
                     initials: "PP",
@@ -323,7 +323,7 @@ export default function CaseStudyPage() {
                       Epic 2
                     </span>
                     <h3 className="text-xl font-bold text-gray-900">
-                      AI Synthesis — The Brain
+                      AI Synthesis: The Brain
                     </h3>
                   </div>
                   <ul className="space-y-2 text-gray-600 text-sm leading-relaxed mb-5">
@@ -394,9 +394,9 @@ export default function CaseStudyPage() {
             <section id="flywheel">
               <SectionHeading>The AI Flywheel</SectionHeading>
               <p className="text-gray-600 leading-relaxed mb-8">
-                The system&apos;s key insight is that the output of competitive analysis — a
-                counter-requirement — feeds directly back into product planning. This closes the
-                loop from raw market signal to internal product action, automatically.
+                The system's key insight is that the output of competitive analysis is a
+                counter-requirement that feeds directly back into product planning. This closes
+                the loop from raw market signal to internal product action, automatically.
               </p>
 
               {/* Flywheel visual */}
@@ -433,7 +433,7 @@ export default function CaseStudyPage() {
               <p className="text-gray-600 leading-relaxed">
                 Instead of competitive intelligence being a one-time report that gets forgotten
                 in a Confluence page, PM-Intel makes it a continuous input to the product
-                process. Every Monday morning, the team starts with a shared baseline — and
+                process. Every Monday morning, the team starts with a shared baseline, and
                 every brief card links directly to a one-click PRD generator.
               </p>
             </section>
@@ -525,10 +525,10 @@ export default function CaseStudyPage() {
               </div>
 
               <p className="text-gray-600 leading-relaxed">
-                This is a conservative estimate — it excludes additional value from faster
+                This is a conservative estimate. It excludes additional value from faster
                 competitive reaction (better roadmap prioritization), reduced meeting overhead
-                (no weekly competitive sync needed), and the compounding benefit of having a
-                shared competitive baseline that prevents duplicated research across the team.
+                (no weekly competitive sync needed), and the compounding benefit of a shared
+                competitive baseline that prevents duplicated research across the team.
                 The directional signal is that the ROI justifies a full-time PM tooling
                 investment, not just a prototype.
               </p>
@@ -568,7 +568,7 @@ export default function CaseStudyPage() {
                     <strong>Draft Counter-Requirement</strong> features make real Claude API calls on
                     every interaction. In a production deployment, the Python scraping backend would
                     replace the sample data by pulling live content from competitor RSS feeds and
-                    blog pages on a weekly schedule — the architecture for this layer is fully
+                    blog pages on a weekly schedule. The architecture for this layer is fully
                     implemented in the repo.
                   </p>
                 </div>
@@ -631,7 +631,7 @@ export default function CaseStudyPage() {
               <div className="grid sm:grid-cols-3 gap-6">
                 {[
                   {
-                    phase: "P1 — MVP (Built)",
+                    phase: "P1: MVP (Built)",
                     color: "border-[#4A154B] bg-purple-50/50",
                     badge: "bg-[#4A154B] text-white",
                     items: [
@@ -642,7 +642,7 @@ export default function CaseStudyPage() {
                     ],
                   },
                   {
-                    phase: "P2 — Next Quarter",
+                    phase: "P2: Next Quarter",
                     color: "border-gray-200 bg-white",
                     badge: "bg-gray-100 text-gray-700",
                     items: [
@@ -655,7 +655,7 @@ export default function CaseStudyPage() {
                     ],
                   },
                   {
-                    phase: "P3 — Future Vision",
+                    phase: "P3: Future Vision",
                     color: "border-gray-100 bg-white",
                     badge: "bg-gray-50 text-gray-500",
                     items: [
@@ -696,11 +696,11 @@ export default function CaseStudyPage() {
                 {[
                   {
                     title: "Hardest part: prompt engineering the gap analysis",
-                    body: "The hardest part wasn't the scraping — it was prompt engineering the gap analysis to be opinionated without being wrong. Early versions would hallucinate Precisely capabilities that didn't exist, producing confident but inaccurate gap assessments. Adding a grounded context block about Precisely's actual platform (data quality, address validation, location intelligence, geocoding, data enrichment, governance) significantly improved accuracy and reduced hallucination.",
+                    body: "The hardest part wasn't the scraping. It was getting the gap analysis prompt to be opinionated without hallucinating. Early versions would confidently describe Precisely capabilities that don't exist. Adding a grounded context block about Precisely's actual platform (data quality, address validation, location intelligence, geocoding, data enrichment, governance) fixed most of that.",
                   },
                   {
                     title: "Highest product leverage: Draft Counter-Requirement",
-                    body: "The \"Draft Counter-Requirement\" feature had the highest product leverage of anything built. A PM could go from seeing a competitor's feature to having a ready-to-paste Jira ticket in under 30 seconds. This collapsed a multi-hour workflow into a single button click — the kind of step-function improvement that users immediately notice.",
+                    body: "The \"Draft Counter-Requirement\" feature ended up having the most product leverage. A PM can go from seeing a competitor's feature to a ready-to-paste Jira ticket in under 30 seconds. That's the kind of improvement users notice immediately, and it's what I'd focus on validating first in a real rollout.",
                   },
                   {
                     title: "If I continued: close the feedback loop",
