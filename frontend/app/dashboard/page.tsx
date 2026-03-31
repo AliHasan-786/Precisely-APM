@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Bell, Settings, RefreshCw, Wifi, WifiOff } from "lucide-react";
+import { Bell, Settings, RefreshCw, Sparkles } from "lucide-react";
 import Sidebar from "@/components/Sidebar";
 import WeeklyBrief from "@/components/WeeklyBrief";
 import DraftRequirementModal from "@/components/DraftRequirementModal";
@@ -37,8 +37,8 @@ export default function DashboardPage() {
   const [loadingCompetitors, setLoadingCompetitors] = useState(true);
   const [loadingBriefs, setLoadingBriefs] = useState(true);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [isMockData, setIsMockData] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  const [liveAnalysisCount, setLiveAnalysisCount] = useState(0);
 
   // ---------------------------------------------------------------------------
   // Data fetching
@@ -49,7 +49,6 @@ export default function DashboardPage() {
       const res = await fetch("/api/competitors");
       const data = await res.json() as { competitors: Competitor[]; _source?: string };
       setCompetitors(data.competitors || []);
-      if (data._source === "mock") setIsMockData(true);
     } catch {
       setCompetitors([]);
     } finally {
@@ -67,7 +66,6 @@ export default function DashboardPage() {
         const res = await fetch(url);
         const data = await res.json() as { briefs: Brief[]; _source?: string };
         setBriefs(data.briefs || []);
-        if (data._source === "mock") setIsMockData(true);
         setLastUpdated(new Date());
       } catch {
         setBriefs([]);
@@ -96,12 +94,19 @@ export default function DashboardPage() {
   const handleTriggerAnalysis = async (competitorName: string) => {
     setIsAnalyzing(true);
     try {
-      await fetch("/api/competitors", { method: "GET" });
-      await new Promise((r) => setTimeout(r, 1500));
-      await fetchBriefs(selectedCompetitor);
-      await fetchCompetitors();
+      const res = await fetch("/api/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ competitor: competitorName }),
+      });
+      const data = await res.json() as { briefs?: Brief[]; error?: string };
+      if (data.briefs && data.briefs.length > 0) {
+        setBriefs((prev) => [...data.briefs!, ...prev]);
+        setLiveAnalysisCount((n) => n + data.briefs!.length);
+        setLastUpdated(new Date());
+      }
     } catch {
-      // Silently fail — data will remain as-is
+      // Silently fail — existing data remains
     } finally {
       setIsAnalyzing(false);
     }
@@ -143,17 +148,14 @@ export default function DashboardPage() {
                 <span className="precisely-gradient-text font-bold text-sm">PM-Intel Agent</span>
               </div>
 
-              {/* Mock data badge */}
-              {isMockData && (
-                <span className="flex items-center gap-1.5 text-xs font-medium text-amber-700 bg-amber-50 border border-amber-200 px-2 py-1 rounded-full">
-                  <WifiOff size={11} />
-                  Demo Mode
-                </span>
-              )}
-              {!isMockData && (
+              {/* AI-Powered badge */}
+              <span className="flex items-center gap-1.5 text-xs font-medium text-purple-700 bg-purple-50 border border-purple-200 px-2 py-1 rounded-full">
+                <Sparkles size={11} />
+                AI-Powered
+              </span>
+              {liveAnalysisCount > 0 && (
                 <span className="flex items-center gap-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-1 rounded-full">
-                  <Wifi size={11} />
-                  Live
+                  +{liveAnalysisCount} live
                 </span>
               )}
             </div>
