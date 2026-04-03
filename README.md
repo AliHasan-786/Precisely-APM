@@ -1,6 +1,8 @@
 # Precisely PM-Intel Agent
 
 > AI-powered competitive intelligence for Precisely Product Managers. Automatically scrapes competitor blogs, extracts product signals with Claude AI, and lets PMs draft counter-requirements in one click.
+>
+> Check out the live demo here: https://precisely-apm.vercel.app/
 
 ---
 
